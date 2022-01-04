@@ -26,7 +26,7 @@ const BasicListTwo: React.FC = () => {
             setViewTasks(tasks);
         } else {
             for (let i = 0; i < tasks.length; i++) {
-                if (tasks[i].includes(search)) {
+                if (tasks[i].toLowerCase().includes(search)) {
                     updateTaskView.push(tasks[i]);
                 }
             }

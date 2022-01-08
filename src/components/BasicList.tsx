@@ -36,6 +36,18 @@ const BasicListTwo: React.FC = () => {
             .catch((error) => setError(error));
     }, []);
 
+    useEffect(() => {
+        axios
+            //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
+            .get<Task[]>('http://localhost:3000/tasks')
+            .then((result) => {
+                console.log('success');
+                setIsLoaded(true);
+                setItems(result.data);
+            })
+            .catch((error) => setError(error));
+    }, []);
+
     function handleChange(event: any) {
         setValue(event.target.value);
     }

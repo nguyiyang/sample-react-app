@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const BasicListTwo: React.FC = () => {
     const [tasks, setTasks] = useState([
         'Frontend',
@@ -28,18 +30,6 @@ const BasicListTwo: React.FC = () => {
         axios
             .get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
             //.get<Task[]>('http://localhost:3000/tasks')
-            .then((result) => {
-                console.log('success');
-                setIsLoaded(true);
-                setItems(result.data);
-            })
-            .catch((error) => setError(error));
-    }, []);
-
-    useEffect(() => {
-        axios
-            //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
-            .get<Task[]>('http://localhost:3000/tasks')
             .then((result) => {
                 console.log('success');
                 setIsLoaded(true);

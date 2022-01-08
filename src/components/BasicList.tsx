@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
-
 const BasicListTwo: React.FC = () => {
     const [tasks, setTasks] = useState([
         'Frontend',

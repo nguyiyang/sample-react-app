@@ -1,4 +1,4 @@
-import BasicList from '../components/BasicList';
+import BasicListTwo from '../components/BasicList';
 import React, { useState } from 'react';
 import Typewriter from 'typewriter-effect';
 import { Button } from '@material-ui/core';
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
         <>
             <h3>{"Welcome to CVWO's sample react app! Here's a basic list for you to experiment with."}</h3>
             <br />
-            <BasicList />
+            <BasicListTwo />
             <br />
             <Typewriter
                 onInit={(typewriter) => {

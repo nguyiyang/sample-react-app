@@ -26,7 +26,7 @@ const BasicListTwo: React.FC = () => {
 
     useEffect(() => {
         axios
-            .get<Task[]>('http://localhost:3000/tasks')
+            .get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
             .then((result) => {
                 console.log(result);
                 setIsLoaded(true);

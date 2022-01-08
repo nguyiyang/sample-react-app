@@ -14,6 +14,7 @@ const BasicListTwo: React.FC = () => {
     ]);
     const [value, setValue] = useState('');
     const [viewTasks, setViewTasks] = useState<string[]>(tasks);
+    const [taskToAdd, setTaskToAdd] = useState('');
 
     const [error, setError] = useState<any>(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -26,10 +27,9 @@ const BasicListTwo: React.FC = () => {
 
     useEffect(() => {
         axios
-            .get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
-            //.get<Task[]>('http://localhost:3000/tasks')
+            //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
+            .get<Task[]>('http://localhost:3000/tasks')
             .then((result) => {
-                console.log('success');
                 setIsLoaded(true);
                 setItems(result.data);
             })
@@ -54,6 +54,22 @@ const BasicListTwo: React.FC = () => {
             }
             setViewTasks(updateTaskView);
         }
+        event.preventDefault();
+    }
+
+    // add task form event handlers
+
+    function addTaskHandleChange(event: any) {
+        setTaskToAdd(event.target.value);
+    }
+
+    function addTask(event: any) {
+        axios
+            .post('http://localhost:3000/tasks', { title: taskToAdd })
+            .then((result) => {
+                console.log('success');
+            })
+            .catch((error) => setError(error));
         event.preventDefault();
     }
 
@@ -87,6 +103,13 @@ const BasicListTwo: React.FC = () => {
                         <li key={item.id}>{item.title}</li>
                     ))}
                 </ul>
+                <form onSubmit={(e) => addTask(e)}>
+                    <label>
+                        {'Add Task:\r'}
+                        <input type="text" value={taskToAdd} onChange={(e) => addTaskHandleChange(e)} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         );
     }

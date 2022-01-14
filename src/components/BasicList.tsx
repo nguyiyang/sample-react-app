@@ -1,3 +1,4 @@
+import UpdateTaskForm from './UpdateTaskForm';
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
@@ -97,11 +98,13 @@ const BasicList: React.FC = () => {
                         <div key={item.id}>
                             <li>{item.title}</li>
                             <form onSubmit={(e) => handleDelete(e, item.id)}>
-                                <input type="submit" value="Submit" />
+                                <input type="submit" value="Delete" />
                             </form>
+                            <UpdateTaskForm id={item.id} title={item.title} fetchTasksList={fetchTasksList} />
                         </div>
                     ))}
                 </ul>
+
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <label>
                         {'Search:\r'}
@@ -109,6 +112,7 @@ const BasicList: React.FC = () => {
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
+
                 <form onSubmit={(e) => addTask(e)}>
                     <label>
                         {'Add Task:\r'}

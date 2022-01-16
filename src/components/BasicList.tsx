@@ -1,4 +1,4 @@
-import UpdateTaskForm from './UpdateTaskForm';
+import Task from './Task';
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
@@ -53,17 +53,6 @@ const BasicList: React.FC = () => {
         event.preventDefault();
     }
 
-    function handleDelete(event: any, taskId: number) {
-        axios
-            .delete(`http://localhost:3000/tasks/${taskId}`)
-            .then((result) => {
-                console.log('success');
-                fetchTasksList();
-            })
-            .catch((error) => setError(error));
-        event.preventDefault();
-    }
-
     // add task form event handlers
 
     function addTaskHandleChange(event: any) {
@@ -96,11 +85,7 @@ const BasicList: React.FC = () => {
                 <ul>
                     {viewTasks.map((item) => (
                         <div key={item.id}>
-                            <li>{item.title}</li>
-                            <form onSubmit={(e) => handleDelete(e, item.id)}>
-                                <input type="submit" value="Delete" />
-                            </form>
-                            <UpdateTaskForm id={item.id} title={item.title} fetchTasksList={fetchTasksList} />
+                            <Task id={item.id} title={item.title} fetchTasksList={fetchTasksList} />
                         </div>
                     ))}
                 </ul>

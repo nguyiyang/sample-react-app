@@ -57,7 +57,6 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
         axios
             .delete(`http://localhost:3000/categories/${categoryId}`)
             .then((result) => {
-                console.log('success');
                 props.fetchCategoryList();
             })
             .catch((error) => setError(error));
@@ -68,8 +67,8 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
         axios
             .put(`http://localhost:3000/categories/${categoryId}`, { title: `${categoryToUpdate}` })
             .then((result) => {
-                console.log('success');
                 props.fetchCategoryList();
+                setCategoryToUpdate('');
             })
             .catch((error) => setError(error));
         event.preventDefault();
@@ -79,23 +78,23 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
         setCategoryToUpdate(event.target.value);
     }
 
-    function handleChange(event: any) {
+    function handleSearchChange(event: any) {
         setValue(event.target.value);
     }
 
-    function handleSubmit(event: any) {
+    function handleSearch(event: any) {
         const search: string = value;
         setViewTasks([]);
-        const updateTaskView: Task[] = [];
         if (search == '') {
             setViewTasks(tasks);
         } else {
-            for (let i = 0; i < tasks.length; i++) {
-                if (tasks[i].title.toLowerCase().includes(search)) {
-                    updateTaskView.push(tasks[i]);
-                }
-            }
-            setViewTasks(updateTaskView);
+            axios
+                //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
+                .get<Task[]>(`http://localhost:3000/categories/${props.id}/tasks/${value}`)
+                .then((result) => {
+                    setViewTasks(result.data);
+                })
+                .catch((error) => setError(error));
         }
         event.preventDefault();
     }
@@ -116,15 +115,20 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
             <ul>
                 {viewTasks.map((item) => (
                     <div key={item.id}>
-                        <Task id={item.id} title={item.title} />
+                        <Task
+                            taskId={item.id}
+                            title={item.title}
+                            categoryId={props.id}
+                            fetchTasksList={fetchTasksList}
+                        />
                     </div>
                 ))}
             </ul>
 
-            <form onSubmit={(e) => handleSubmit(e)}>
+            <form onSubmit={(e) => handleSearch(e)}>
                 <label>
                     {'Search:\r'}
-                    <input type="text" value={value} onChange={(e) => handleChange(e)} />
+                    <input type="text" value={value} onChange={(e) => handleSearchChange(e)} />
                 </label>
                 <input type="submit" value="Submit" />
             </form>

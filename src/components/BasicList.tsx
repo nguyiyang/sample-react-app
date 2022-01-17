@@ -4,15 +4,14 @@ import '../App.css';
 import axios from 'axios';
 
 const BasicList: React.FC = () => {
-    const [categories, setCategories] = useState<Task[]>([]);
-    const [value, setValue] = useState('');
-    const [viewCategories, setViewCategories] = useState<Task[]>(categories);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [viewCategories, setViewCategories] = useState<Category[]>(categories);
     const [categoryToAdd, setCategoryToAdd] = useState('');
 
     const [error, setError] = useState<any>(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    interface Task {
+    interface Category {
         id: number;
         title: string;
     }
@@ -20,7 +19,7 @@ const BasicList: React.FC = () => {
     const fetchCategoryList = () => {
         axios
             //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
-            .get<Task[]>('http://localhost:3000/categories')
+            .get<Category[]>('http://localhost:3000/categories')
             .then((result) => {
                 setIsLoaded(true);
                 setCategories(result.data);
@@ -31,29 +30,7 @@ const BasicList: React.FC = () => {
 
     useEffect(fetchCategoryList, []);
 
-    function handleChange(event: any) {
-        setValue(event.target.value);
-    }
-
-    function handleSubmit(event: any) {
-        const search: string = value;
-        setViewCategories([]);
-        const updateTaskView: Task[] = [];
-        if (search == '') {
-            setViewCategories(categories);
-        } else {
-            for (let i = 0; i < categories.length; i++) {
-                if (categories[i].title.toLowerCase().includes(search)) {
-                    updateTaskView.push(categories[i]);
-                }
-            }
-            setViewCategories(updateTaskView);
-        }
-        console.log(updateTaskView);
-        event.preventDefault();
-    }
-
-    // add task form event handlers
+    // add category form event handlers
 
     function addCategoryHandleChange(event: any) {
         setCategoryToAdd(event.target.value);
@@ -63,7 +40,7 @@ const BasicList: React.FC = () => {
         axios
             .post('http://localhost:3000/categories', { title: categoryToAdd })
             .then((result) => {
-                console.log('success');
+                fetchCategoryList();
             })
             .catch((error) => setError(error));
         event.preventDefault();
@@ -90,14 +67,6 @@ const BasicList: React.FC = () => {
                         </div>
                     ))}
                 </ul>
-
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <label>
-                        {'Search:\r'}
-                        <input type="text" value={value} onChange={(e) => handleChange(e)} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
 
                 <form onSubmit={(e) => addCategory(e)}>
                     <label>

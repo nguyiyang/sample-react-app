@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 interface TaskProps {
-    id: number;
+    taskId: number;
     title: string;
+    categoryId: number;
+    fetchTasksList: any;
 }
 
 const Task: React.FC<TaskProps> = (props: TaskProps) => {
@@ -12,9 +14,9 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
 
     function handleDeleteTask(event: any, taskId: number) {
         axios
-            .delete(`http://localhost:3000/categories/${taskId}`)
+            .delete(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`)
             .then((result) => {
-                console.log('success');
+                props.fetchTasksList();
             })
             .catch((error) => setError(error));
         event.preventDefault();
@@ -22,9 +24,10 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
 
     function handleUpdateTask(event: any, taskId: number) {
         axios
-            .put(`http://localhost:3000/categories/${taskId}`, { title: `${taskToUpdate}` })
+            .put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
             .then((result) => {
-                console.log('success');
+                props.fetchTasksList();
+                setTaskToUpdate('');
             })
             .catch((error) => setError(error));
         event.preventDefault();
@@ -37,10 +40,10 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
     return (
         <div>
             <li>{props.title}</li>
-            <form onSubmit={(e) => handleDeleteTask(e, props.id)}>
+            <form onSubmit={(e) => handleDeleteTask(e, props.taskId)}>
                 <input type="submit" value="Delete Task" />
             </form>
-            <form onSubmit={(e) => handleUpdateTask(e, props.id)}>
+            <form onSubmit={(e) => handleUpdateTask(e, props.taskId)}>
                 <label>
                     {'Update title:\r'}
                     <input type="text" value={taskToUpdate} onChange={(e) => handleUpdateChange(e)} />

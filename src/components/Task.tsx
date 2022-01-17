@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 interface TaskProps {
-    id: number;
+    taskId: number;
     title: string;
+    categoryId: number;
     fetchTasksList: any;
 }
 
@@ -11,23 +12,22 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
     const [taskToUpdate, setTaskToUpdate] = useState('');
     const [error, setError] = useState<any>(null);
 
-    function handleDelete(event: any, taskId: number) {
+    function handleDeleteTask(event: any, taskId: number) {
         axios
-            .delete(`http://localhost:3000/tasks/${taskId}`)
+            .delete(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`)
             .then((result) => {
-                console.log('success');
                 props.fetchTasksList();
             })
             .catch((error) => setError(error));
         event.preventDefault();
     }
 
-    function handleUpdate(event: any, taskId: number) {
+    function handleUpdateTask(event: any, taskId: number) {
         axios
-            .put(`http://localhost:3000/tasks/${taskId}`, { title: `${taskToUpdate}` })
+            .put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
             .then((result) => {
-                console.log('success');
                 props.fetchTasksList();
+                setTaskToUpdate('');
             })
             .catch((error) => setError(error));
         event.preventDefault();
@@ -40,15 +40,15 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
     return (
         <div>
             <li>{props.title}</li>
-            <form onSubmit={(e) => handleDelete(e, props.id)}>
-                <input type="submit" value="Delete" />
+            <form onSubmit={(e) => handleDeleteTask(e, props.taskId)}>
+                <input type="submit" value="Delete Task" />
             </form>
-            <form onSubmit={(e) => handleUpdate(e, props.id)}>
+            <form onSubmit={(e) => handleUpdateTask(e, props.taskId)}>
                 <label>
                     {'Update title:\r'}
                     <input type="text" value={taskToUpdate} onChange={(e) => handleUpdateChange(e)} />
                 </label>
-                <input type="submit" value="Update" />
+                <input type="submit" value="Update Task" />
             </form>
         </div>
     );

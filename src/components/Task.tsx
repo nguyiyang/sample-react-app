@@ -6,6 +6,8 @@ interface TaskProps {
     title: string;
     categoryId: number;
     fetchTasksList: any;
+    priority: string;
+    recurrence: string;
 }
 
 const Task: React.FC<TaskProps> = (props: TaskProps) => {
@@ -40,6 +42,8 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
     return (
         <div>
             <li>{props.title}</li>
+            <li>{props.priority}</li>
+            <li>{props.recurrence}</li>
             <form onSubmit={(e) => handleDeleteTask(e, props.taskId)}>
                 <input type="submit" value="Delete Task" />
             </form>

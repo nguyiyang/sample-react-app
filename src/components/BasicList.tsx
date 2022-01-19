@@ -8,12 +8,16 @@ const BasicList: React.FC = () => {
     const [viewCategories, setViewCategories] = useState<Category[]>(categories);
     const [categoryToAdd, setCategoryToAdd] = useState('');
 
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<Error>();
     const [isLoaded, setIsLoaded] = useState(false);
 
     interface Category {
         id: number;
         title: string;
+    }
+
+    interface Error {
+        message: string;
     }
 
     const fetchCategoryList = () => {
@@ -32,14 +36,14 @@ const BasicList: React.FC = () => {
 
     // add category form event handlers
 
-    function addCategoryHandleChange(event: any) {
+    function addCategoryHandleChange(event: React.ChangeEvent<HTMLInputElement>) {
         setCategoryToAdd(event.target.value);
     }
 
-    function addCategory(event: any) {
+    function addCategory(event: React.SyntheticEvent) {
         axios
             .post('http://localhost:3000/categories', { title: categoryToAdd })
-            .then((result) => {
+            .then(() => {
                 fetchCategoryList();
             })
             .catch((error) => setError(error));
@@ -58,10 +62,10 @@ const BasicList: React.FC = () => {
     } else {
         return (
             <div style={{ width: '25vw', margin: 'auto', textAlign: 'center' }}>
-                <h4>{'Some web development tools/concepts:'}</h4>
                 <ul>
                     {viewCategories.map((item) => (
                         <div key={item.id}>
+                            <p>{item.id}</p>
                             <Category id={item.id} title={item.title} fetchCategoryList={fetchCategoryList} />
                             <br></br>
                         </div>

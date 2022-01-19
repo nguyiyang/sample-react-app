@@ -1,5 +1,5 @@
 import Task from './Task';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import axios from 'axios';
 
 interface CategoryProps {
@@ -24,7 +24,7 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
     const [recurrenceList, setRecurrenceList] = useState<string[]>([]);
     const [sortValue, setSortValue] = useState('priority');
     const [categoryToUpdate, setCategoryToUpdate] = useState('');
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<string>('');
 
     const [viewTasks, setViewTasks] = useState<Task[]>([]);
     const [value, setValue] = useState('');
@@ -34,7 +34,7 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
             //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
             .get(`http://localhost:3000/categories/${props.id}/tasks`)
             .then((result) => {
-                console.log(result.data);
+                console.log(props.id);
                 setTasks(result.data.tasks);
                 setViewTasks(result.data.tasks);
                 setPriorityList(result.data.priorities);
@@ -45,7 +45,7 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
 
     useEffect(fetchTasksList, []);
 
-    function handleAddTask(event: any) {
+    function handleAddTask(event: React.SyntheticEvent) {
         axios
             .post(`http://localhost:3000/categories/${props.id}/tasks`, {
                 title: `${taskToAdd}`,
@@ -53,41 +53,41 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
                 priority: `${priorityToAdd}`,
                 recurrence: `${recurrenceToAdd}`,
             })
-            .then((result) => {
+            .then(() => {
                 alert('success');
                 fetchTasksList();
                 setTaskToAdd('');
             })
-            .catch((error) => setError(error));
+            .catch((error) => setError(error.response.data.message));
         event.preventDefault();
     }
 
-    function handleAddTaskChange(event: any) {
+    function handleAddTaskChange(event: ChangeEvent<HTMLInputElement>) {
         setTaskToAdd(event.target.value);
     }
 
-    function handleAddRecurrenceChange(event: any) {
+    function handleAddRecurrenceChange(event: ChangeEvent<HTMLSelectElement>) {
         setRecurrenceToAdd(event.target.value);
     }
 
-    function handleAddPriorityChange(event: any) {
+    function handleAddPriorityChange(event: ChangeEvent<HTMLSelectElement>) {
         setPriorityToAdd(event.target.value);
     }
 
-    function handleDeleteCategory(event: any, categoryId: number) {
+    function handleDeleteCategory(event: React.SyntheticEvent, categoryId: number) {
         axios
             .delete(`http://localhost:3000/categories/${categoryId}`)
-            .then((result) => {
+            .then(() => {
                 props.fetchCategoryList();
             })
             .catch((error) => setError(error));
         event.preventDefault();
     }
 
-    function handleUpdateCategory(event: any, categoryId: number) {
+    function handleUpdateCategory(event: React.SyntheticEvent, categoryId: number) {
         axios
             .put(`http://localhost:3000/categories/${categoryId}`, { title: `${categoryToUpdate}` })
-            .then((result) => {
+            .then(() => {
                 props.fetchCategoryList();
                 setCategoryToUpdate('');
             })
@@ -95,15 +95,15 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
         event.preventDefault();
     }
 
-    function handleUpdateChange(event: any) {
+    function handleUpdateChange(event: ChangeEvent<HTMLInputElement>) {
         setCategoryToUpdate(event.target.value);
     }
 
-    function handleSearchChange(event: any) {
+    function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         setValue(event.target.value);
     }
 
-    function handleSearch(event: any) {
+    function handleSearch(event: React.SyntheticEvent) {
         const search: string = value;
         setViewTasks([]);
         if (search == '') {
@@ -120,11 +120,11 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
         event.preventDefault();
     }
 
-    function handleSortChange(event: any) {
+    function handleSortChange(event: ChangeEvent<HTMLSelectElement>) {
         setSortValue(event.target.value);
     }
 
-    function handleSort(event: any) {
+    function handleSort(event: React.SyntheticEvent) {
         axios
             .get<Task[]>(`http://localhost:3000/categories/${props.id}/tasks/sort/${sortValue}`)
             .then((result) => {

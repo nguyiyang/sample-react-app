@@ -10,32 +10,36 @@ interface TaskProps {
     recurrence: string;
 }
 
+interface Error {
+    message: string;
+}
+
 const Task: React.FC<TaskProps> = (props: TaskProps) => {
     const [taskToUpdate, setTaskToUpdate] = useState('');
-    const [error, setError] = useState<any>(null);
+    const [error, setError] = useState<Error>();
 
-    function handleDeleteTask(event: any, taskId: number) {
+    function handleDeleteTask(event: React.SyntheticEvent, taskId: number) {
         axios
             .delete(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`)
-            .then((result) => {
+            .then(() => {
                 props.fetchTasksList();
             })
             .catch((error) => setError(error));
         event.preventDefault();
     }
 
-    function handleUpdateTask(event: any, taskId: number) {
+    function handleUpdateTask(event: React.SyntheticEvent, taskId: number) {
         axios
             .put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
-            .then((result) => {
+            .then(() => {
                 props.fetchTasksList();
                 setTaskToUpdate('');
             })
-            .catch((error) => setError(error));
+            .catch((error) => alert(error.response.data.message));
         event.preventDefault();
     }
 
-    function handleUpdateChange(event: any) {
+    function handleUpdateChange(event: React.ChangeEvent<HTMLInputElement>) {
         setTaskToUpdate(event.target.value);
     }
 

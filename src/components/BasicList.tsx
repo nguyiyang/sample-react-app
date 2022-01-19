@@ -1,4 +1,4 @@
-import Category from './Category';
+import Category from './categories/Category';
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
@@ -30,6 +30,7 @@ const BasicList: React.FC = () => {
                 setViewCategories(result.data);
             })
             .catch((error) => setError(error));
+        event?.preventDefault;
     };
 
     useEffect(fetchCategoryList, []);
@@ -45,6 +46,7 @@ const BasicList: React.FC = () => {
             .post('http://localhost:3000/categories', { title: categoryToAdd })
             .then(() => {
                 fetchCategoryList();
+                setCategoryToAdd('');
             })
             .catch((error) => setError(error));
         event.preventDefault();
@@ -65,7 +67,6 @@ const BasicList: React.FC = () => {
                 <ul>
                     {viewCategories.map((item) => (
                         <div key={item.id}>
-                            <p>{item.id}</p>
                             <Category id={item.id} title={item.title} fetchCategoryList={fetchCategoryList} />
                             <br></br>
                         </div>

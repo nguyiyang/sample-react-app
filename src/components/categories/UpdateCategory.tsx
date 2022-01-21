@@ -12,7 +12,8 @@ const UpdateCategory: React.FC<SortCategoryProps> = (props: SortCategoryProps) =
 
     function handleUpdateCategory(event: React.SyntheticEvent) {
         axios
-            .put(`http://localhost:3000/categories/${props.id}`, { title: `${categoryToUpdate}` })
+            .put(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}`, { title: `${categoryToUpdate}` })
+            //.put(`http://localhost:3000/categories/${props.id}`, { title: `${categoryToUpdate}` })
             .then(() => {
                 props.fetchCategoryList();
                 setCategoryToUpdate('');

@@ -30,8 +30,8 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
 
     const fetchTasksList = () => {
         axios
-            //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
-            .get(`http://localhost:3000/categories/${props.id}/tasks`)
+            .get(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks`)
+            //.get(`http://localhost:3000/categories/${props.id}/tasks`)
             .then((result) => {
                 console.log(props.id);
                 setTasks(result.data.tasks);
@@ -49,7 +49,8 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
             <li>{props.title}</li>
             <DeleteCategory id={props.id} fetchCategoryList={props.fetchCategoryList} />
             <UpdateCategory id={props.id} fetchCategoryList={props.fetchCategoryList} />
-            <ul>
+
+            <div>
                 {viewTasks.map((item) => (
                     <div key={item.id}>
                         <Task
@@ -62,7 +63,7 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
                         />
                     </div>
                 ))}
-            </ul>
+            </div>
 
             <SearchTask id={props.id} setViewTasks={setViewTasks} tasks={tasks} />
             <br></br>

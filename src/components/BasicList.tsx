@@ -22,8 +22,8 @@ const BasicList: React.FC = () => {
 
     const fetchCategoryList = () => {
         axios
-            //.get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/tasks')
-            .get<Category[]>('http://localhost:3000/categories')
+            .get<Category[]>('https://nguyiyang-cvwo.herokuapp.com/categories')
+            //.get<Category[]>('http://localhost:3000/categories')
             .then((result) => {
                 setIsLoaded(true);
                 setCategories(result.data);
@@ -43,7 +43,8 @@ const BasicList: React.FC = () => {
 
     function addCategory(event: React.SyntheticEvent) {
         axios
-            .post('http://localhost:3000/categories', { title: categoryToAdd })
+            .post('https://nguyiyang-cvwo.herokuapp.com/categories', { title: categoryToAdd })
+            //.post('http://localhost:3000/categories', { title: categoryToAdd })
             .then(() => {
                 fetchCategoryList();
                 setCategoryToAdd('');
@@ -63,16 +64,7 @@ const BasicList: React.FC = () => {
         return <div>{'Loading...'}</div>;
     } else {
         return (
-            <div style={{ width: '25vw', margin: 'auto', textAlign: 'center' }}>
-                <ul>
-                    {viewCategories.map((item) => (
-                        <div key={item.id}>
-                            <Category id={item.id} title={item.title} fetchCategoryList={fetchCategoryList} />
-                            <br></br>
-                        </div>
-                    ))}
-                </ul>
-
+            <div style={{ margin: 'auto', textAlign: 'center' }}>
                 <form onSubmit={(e) => addCategory(e)}>
                     <label>
                         {'Add Category:\r'}
@@ -80,6 +72,14 @@ const BasicList: React.FC = () => {
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
+                <div className="flex-container">
+                    {viewCategories.map((item) => (
+                        <div className="flex-child" key={item.id}>
+                            <Category id={item.id} title={item.title} fetchCategoryList={fetchCategoryList} />
+                            <br></br>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }

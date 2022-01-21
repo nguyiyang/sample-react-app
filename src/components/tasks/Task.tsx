@@ -20,7 +20,8 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
 
     function handleDeleteTask(event: React.SyntheticEvent, taskId: number) {
         axios
-            .delete(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`)
+            .delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${taskId}`)
+            //.delete(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`)
             .then(() => {
                 props.fetchTasksList();
             })
@@ -30,7 +31,10 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
 
     function handleUpdateTask(event: React.SyntheticEvent, taskId: number) {
         axios
-            .put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
+            .put(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${taskId}`, {
+                title: `${taskToUpdate}`,
+            })
+            //.put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
             .then(() => {
                 props.fetchTasksList();
                 setTaskToUpdate('');

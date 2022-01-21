@@ -20,12 +20,18 @@ const AddTask: React.FC<AddTask> = (props: AddTask) => {
 
     function handleAddTask(event: React.SyntheticEvent) {
         axios
-            .post(`http://localhost:3000/categories/${props.id}/tasks`, {
+            .post(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks`, {
                 title: `${taskToAdd}`,
                 category_id: `${props.id}`,
                 priority: `${priorityToAdd}`,
                 recurrence: `${recurrenceToAdd}`,
             })
+            // .post(`http://localhost:3000/categories/${props.id}/tasks`, {
+            //     title: `${taskToAdd}`,
+            //     category_id: `${props.id}`,
+            //     priority: `${priorityToAdd}`,
+            //     recurrence: `${recurrenceToAdd}`,
+            // })
             .then(() => {
                 alert('success');
                 props.fetchTasksList();

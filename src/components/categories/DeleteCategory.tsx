@@ -11,7 +11,8 @@ const DeleteCategory: React.FC<DeleteCategoryProps> = (props: DeleteCategoryProp
 
     function handleDeleteCategory(event: React.SyntheticEvent, id: number) {
         axios
-            .delete(`http://localhost:3000/categories/${id}`)
+            .delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${id}`)
+            //.delete(`http://localhost:3000/categories/${id}`)
             .then(() => {
                 props.fetchCategoryList();
             })

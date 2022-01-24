@@ -33,16 +33,17 @@ const SortCategory: React.FC<SortCategoryProps> = (props: SortCategoryProps) => 
     }
 
     return (
-        <form onSubmit={(e) => handleSort(e)}>
-            <label>
-                {'Sort by:\r'}
-                <select value={sortValue} onChange={(e) => handleSortChange(e)}>
-                    <option value="priority">{'priority\r'}</option>
-                    <option value="recurrence">{'recurrence\r'}</option>
-                </select>
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
+        <div className="filter-child">
+            <form onSubmit={(e) => handleSort(e)}>
+                <label>
+                    <select value={sortValue} onChange={(e) => handleSortChange(e)}>
+                        <option value="priority">{'priority\r'}</option>
+                        <option value="recurrence">{'recurrence\r'}</option>
+                    </select>
+                </label>
+                <input type="submit" value="Sort" />
+            </form>
+        </div>
     );
 };
 

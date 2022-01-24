@@ -1,4 +1,6 @@
 import Category from './categories/Category';
+import Error from './Error';
+import { Paper } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
@@ -8,7 +10,7 @@ const BasicList: React.FC = () => {
     const [viewCategories, setViewCategories] = useState<Category[]>(categories);
     const [categoryToAdd, setCategoryToAdd] = useState('');
 
-    const [error, setError] = useState<Error>();
+    const [error, setError] = useState<string>('');
     const [isLoaded, setIsLoaded] = useState(false);
 
     interface Category {
@@ -29,7 +31,7 @@ const BasicList: React.FC = () => {
                 setCategories(result.data);
                 setViewCategories(result.data);
             })
-            .catch((error) => setError(error));
+            .catch((error) => setError(error.response.data.message));
         event?.preventDefault;
     };
 
@@ -46,38 +48,32 @@ const BasicList: React.FC = () => {
             .post('https://nguyiyang-cvwo.herokuapp.com/categories', { title: categoryToAdd })
             //.post('http://localhost:3000/categories', { title: categoryToAdd })
             .then(() => {
+                setError('');
                 fetchCategoryList();
                 setCategoryToAdd('');
             })
-            .catch((error) => setError(error));
+            .catch((error) => setError(error.response.data.message));
         event.preventDefault();
     }
 
-    if (error) {
-        return (
-            <div>
-                {'Error: '}
-                {error.message}
-            </div>
-        );
-    } else if (!isLoaded) {
+    if (!isLoaded) {
         return <div>{'Loading...'}</div>;
     } else {
         return (
             <div style={{ margin: 'auto', textAlign: 'center' }}>
                 <form onSubmit={(e) => addCategory(e)}>
                     <label>
-                        {'Add Category:\r'}
                         <input type="text" value={categoryToAdd} onChange={(e) => addCategoryHandleChange(e)} />
                     </label>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="New Category" />
                 </form>
+                <Error message={error} setError={setError} />
                 <div className="flex-container">
                     {viewCategories.map((item) => (
-                        <div className="flex-child" key={item.id}>
+                        <Paper className="flex-child" elevation={3} key={item.id}>
                             <Category id={item.id} title={item.title} fetchCategoryList={fetchCategoryList} />
                             <br></br>
-                        </div>
+                        </Paper>
                     ))}
                 </div>
             </div>

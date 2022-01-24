@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface DeleteCategoryProps {
     id: number;
-    fetchCategoryList: any;
+    fetchCategoryList: () => void;
 }
 
 const DeleteCategory: React.FC<DeleteCategoryProps> = (props: DeleteCategoryProps) => {
-    const [error, setError] = useState<string>('');
-
     function handleDeleteCategory(event: React.SyntheticEvent, id: number) {
         axios
             .delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${id}`)
             //.delete(`http://localhost:3000/categories/${id}`)
             .then(() => {
                 props.fetchCategoryList();
-            })
-            .catch((error) => setError(error));
+            });
         event.preventDefault();
     }
 
     return (
-        <form onSubmit={(e) => handleDeleteCategory(e, props.id)}>
-            <input type="submit" value="Delete Category" />
-        </form>
+        <div className="topcorner">
+            <DeleteIcon onClick={(e) => handleDeleteCategory(e, props.id)} />
+        </div>
     );
 };
 

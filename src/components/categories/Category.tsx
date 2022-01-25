@@ -1,16 +1,16 @@
 import DeleteCategory from './DeleteCategory';
-import SortCategory from './SortCategory';
 import UpdateCategory from './UpdateCategory';
 import AddTask from '../tasks/AddTask';
+import FilterTask from '../tasks/FilterTask';
+import Error from '../Error';
 import Task from '../tasks/Task';
-import SearchTask from '../tasks/SearchTask';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 interface CategoryProps {
     id: number;
     title: string;
-    fetchCategoryList: any;
+    fetchCategoryList: () => void;
 }
 
 interface Task {
@@ -31,7 +31,6 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
     const fetchTasksList = () => {
         axios
             .get(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks`)
-            //.get(`http://localhost:3000/categories/${props.id}/tasks`)
             .then((result) => {
                 console.log(props.id);
                 setTasks(result.data.tasks);
@@ -44,15 +43,30 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
 
     useEffect(fetchTasksList, []);
 
+    const addTaskProps = {
+        id: props.id,
+        fetchTasksList: fetchTasksList,
+        priorityList: priorityList,
+        recurrenceList: recurrenceList,
+        setError: setError,
+    };
+
     return (
         <div>
-            <li>{props.title}</li>
             <DeleteCategory id={props.id} fetchCategoryList={props.fetchCategoryList} />
-            <UpdateCategory id={props.id} fetchCategoryList={props.fetchCategoryList} />
+            <UpdateCategory id={props.id} title={props.title} fetchCategoryList={props.fetchCategoryList} />
 
-            <div>
+            <FilterTask id={props.id} setViewTasks={setViewTasks} tasks={tasks} />
+
+            <table>
+                <tr>
+                    <th className="th-description">{'Task '}</th>
+                    <th className="th-details">{'Priority '}</th>
+                    <th className="th-details">{'Recurrence '}</th>
+                    <th></th>
+                </tr>
                 {viewTasks.map((item) => (
-                    <div key={item.id}>
+                    <tr key={item.id}>
                         <Task
                             taskId={item.id}
                             title={item.title}
@@ -60,22 +74,16 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
                             recurrence={item.recurrence}
                             priority={item.priority}
                             fetchTasksList={fetchTasksList}
+                            priorityList={priorityList}
+                            recurrenceList={recurrenceList}
                         />
-                    </div>
+                    </tr>
                 ))}
-            </div>
-
-            <SearchTask id={props.id} setViewTasks={setViewTasks} tasks={tasks} />
-            <br></br>
-
-            <SortCategory id={props.id} setViewTasks={setViewTasks} />
-
-            <AddTask
-                id={props.id}
-                fetchTasksList={fetchTasksList}
-                priorityList={priorityList}
-                recurrenceList={recurrenceList}
-            />
+                <tr>
+                    <AddTask {...addTaskProps} />
+                </tr>
+            </table>
+            <Error message={error} setError={setError} />
         </div>
     );
 };

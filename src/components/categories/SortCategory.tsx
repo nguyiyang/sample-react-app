@@ -24,7 +24,6 @@ const SortCategory: React.FC<SortCategoryProps> = (props: SortCategoryProps) => 
     function handleSort(event: React.SyntheticEvent) {
         axios
             .get<Task[]>(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks/sort/${sortValue}`)
-            //.get<Task[]>(`http://localhost:3000/categories/${props.id}/tasks/sort/${sortValue}`)
             .then((result) => {
                 props.setViewTasks(result.data);
             })
@@ -33,16 +32,17 @@ const SortCategory: React.FC<SortCategoryProps> = (props: SortCategoryProps) => 
     }
 
     return (
-        <form onSubmit={(e) => handleSort(e)}>
-            <label>
-                {'Sort by:\r'}
-                <select value={sortValue} onChange={(e) => handleSortChange(e)}>
-                    <option value="priority">{'priority\r'}</option>
-                    <option value="recurrence">{'recurrence\r'}</option>
-                </select>
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
+        <div className="filter-child">
+            <form onSubmit={(e) => handleSort(e)}>
+                <label>
+                    <select value={sortValue} onChange={(e) => handleSortChange(e)}>
+                        <option value="priority">{'priority\r'}</option>
+                        <option value="recurrence">{'recurrence\r'}</option>
+                    </select>
+                </label>
+                <input type="submit" value="Sort" />
+            </form>
+        </div>
     );
 };
 

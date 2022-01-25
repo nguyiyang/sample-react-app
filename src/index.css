@@ -12,9 +12,53 @@ code {
 
 .flex-container {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .flex-child {
     flex: 1;
-    border: 2px solid yellow;
+    min-width: 31%;
+    max-width: 31%;
+    border: 2px solid black;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 50vh;
+    margin: 1%;
+    position: relative;
+}
+
+.topcorner {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.filter-container {
+    display: flex;
+    text-align: left;
+}
+
+.filter-child {
+    margin-right: 5%;
+    position: relative;
+}
+
+.td-details,
+.th-details {
+    width: 4%;
+    border: 1px solid black;
+}
+
+.td-description {
+    width: 10%;
+    border: 1px solid black;
+}
+
+.th-description {
+    width: 10%;
+    border: 1px solid black;
+}
+
+.remove-task {
+    width: 1%;
 }

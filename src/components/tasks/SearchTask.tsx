@@ -3,8 +3,9 @@ import axios from 'axios';
 
 interface SearchTaskProps {
     id: number;
-    setViewTasks: any;
+    setViewTasks: (tasks: Task[]) => void;
     tasks: Task[];
+    setResult: (value: string) => void;
 }
 
 interface Task {
@@ -14,28 +15,24 @@ interface Task {
     recurrence: string;
 }
 
-interface Error {
-    message: string;
-}
-
 const SearchTask: React.FC<SearchTaskProps> = (props: SearchTaskProps) => {
     const [value, setValue] = useState('');
-    const [error, setError] = useState<Error>();
 
     function handleSearch(event: React.SyntheticEvent) {
         const search: string = value;
         props.setViewTasks([]);
         if (search == '') {
             props.setViewTasks(props.tasks);
+            props.setResult('');
         } else {
             axios
-                .get<Task[]>('https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks/search/${value}')
-                //.get<Task[]>(`http://localhost:3000/categories/${props.id}/tasks/search/${value}`)
+                .get<Task[]>(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks/search/${value}`)
                 .then((result) => {
+                    console.log(result.data);
                     props.setViewTasks(result.data);
+                    props.setResult(search);
                     setValue('');
-                })
-                .catch((error) => setError(error));
+                });
         }
         event.preventDefault();
     }
@@ -45,13 +42,14 @@ const SearchTask: React.FC<SearchTaskProps> = (props: SearchTaskProps) => {
     }
 
     return (
-        <form onSubmit={(e) => handleSearch(e)}>
-            <label>
-                {'Search:\r'}
-                <input type="text" value={value} onChange={(e) => handleSearchChange(e)} />
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
+        <div className="filter-child">
+            <form onSubmit={(e) => handleSearch(e)}>
+                <label>
+                    <input type="text" size={10} value={value} onChange={(e) => handleSearchChange(e)} />
+                </label>
+                <input type="submit" value="Search" />
+            </form>
+        </div>
     );
 };
 

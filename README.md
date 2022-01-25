@@ -6,6 +6,8 @@ It also includes operations to search and sort tasks.
 
 Ngu Yi Yang, A0217459W
 
+[Final WriteUp](https://nguyiyang.github.io/sample-react-app/NguYiYang_A0217459W_FinalWriteUp.pdf)
+
 ## Getting Started
 
 ### Running the app

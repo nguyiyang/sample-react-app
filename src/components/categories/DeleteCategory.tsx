@@ -9,12 +9,9 @@ interface DeleteCategoryProps {
 
 const DeleteCategory: React.FC<DeleteCategoryProps> = (props: DeleteCategoryProps) => {
     function handleDeleteCategory(event: React.SyntheticEvent, id: number) {
-        axios
-            .delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${id}`)
-            //.delete(`http://localhost:3000/categories/${id}`)
-            .then(() => {
-                props.fetchCategoryList();
-            });
+        axios.delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${id}`).then(() => {
+            props.fetchCategoryList();
+        });
         event.preventDefault();
     }
 

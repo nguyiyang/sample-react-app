@@ -31,7 +31,6 @@ const Category: React.FC<CategoryProps> = (props: CategoryProps) => {
     const fetchTasksList = () => {
         axios
             .get(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks`)
-            //.get(`http://localhost:3000/categories/${props.id}/tasks`)
             .then((result) => {
                 console.log(props.id);
                 setTasks(result.data.tasks);

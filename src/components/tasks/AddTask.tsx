@@ -23,12 +23,6 @@ const AddTask: React.FC<AddTask> = (props: AddTask) => {
                 priority: `${priorityToAdd}`,
                 recurrence: `${recurrenceToAdd}`,
             })
-            // .post(`http://localhost:3000/categories/${props.id}/tasks`, {
-            //     title: `${taskToAdd}`,
-            //     category_id: `${props.id}`,
-            //     priority: `${priorityToAdd}`,
-            //     recurrence: `${recurrenceToAdd}`,
-            // })
             .then(() => {
                 props.setError('');
                 props.fetchTasksList();

@@ -24,7 +24,6 @@ const SortCategory: React.FC<SortCategoryProps> = (props: SortCategoryProps) => 
     function handleSort(event: React.SyntheticEvent) {
         axios
             .get<Task[]>(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks/sort/${sortValue}`)
-            //.get<Task[]>(`http://localhost:3000/categories/${props.id}/tasks/sort/${sortValue}`)
             .then((result) => {
                 props.setViewTasks(result.data);
             })

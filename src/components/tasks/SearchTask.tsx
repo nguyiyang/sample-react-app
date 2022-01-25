@@ -27,7 +27,6 @@ const SearchTask: React.FC<SearchTaskProps> = (props: SearchTaskProps) => {
         } else {
             axios
                 .get<Task[]>(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.id}/tasks/search/${value}`)
-                //.get<Task[]>(`http://localhost:3000/categories/${props.id}/tasks/search/${value}`)
                 .then((result) => {
                     console.log(result.data);
                     props.setViewTasks(result.data);

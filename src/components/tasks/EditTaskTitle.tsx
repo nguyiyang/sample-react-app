@@ -21,7 +21,6 @@ const EditTaskTitle: React.FC<TaskProps> = (props: TaskProps) => {
             .put(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${props.taskId}`, {
                 title: `${taskToUpdate}`,
             })
-            //.put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
             .then(() => {
                 props.fetchTasksList();
                 setTaskToUpdate('');

@@ -7,23 +7,25 @@ interface TaskProps {
     title: string;
     categoryId: number;
     fetchTasksList: () => void;
-    priority: string;
+    detail: string;
     options: string[];
+    type: string;
 }
 
 const EditTaskDetails: React.FC<TaskProps> = (props: TaskProps) => {
-    const [taskToUpdate, setTaskToUpdate] = useState(props.priority);
+    const [taskToUpdate, setTaskToUpdate] = useState(props.detail);
     const [isEditing, setIsEditing] = useState(false);
 
     function handleUpdateTaskDetails(event: string) {
+        const data = {
+            ...(props.type == 'priority' && { priority: event }),
+            ...(props.type == 'recurrence' && { recurrence: event }),
+        };
         axios
-            .put(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${props.taskId}`, {
-                priority: event,
-            })
-            //.put(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`, { title: `${taskToUpdate}` })
+            .put(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${props.taskId}`, data)
             .then(() => {
                 props.fetchTasksList();
-                setTaskToUpdate(props.priority);
+                setTaskToUpdate(props.detail);
                 setIsEditing(false);
             });
     }
@@ -55,7 +57,7 @@ const EditTaskDetails: React.FC<TaskProps> = (props: TaskProps) => {
                             ))}
                         </select>
                     ) : (
-                        <p onClick={handleClick}>{props.priority}</p>
+                        <p onClick={handleClick}>{props.detail}</p>
                     )}
                 </div>
             </ClickAwayListener>

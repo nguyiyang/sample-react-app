@@ -1,6 +1,5 @@
 import EditTaskTitle from './EditTaskTitle';
 import EditTaskDetails from './EditTaskDetails';
-import EditTaskRecurrence from './EditTaskRecurrence';
 import React from 'react';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -18,12 +17,9 @@ interface TaskProps {
 
 const Task: React.FC<TaskProps> = (props: TaskProps) => {
     function handleDeleteTask(event: React.SyntheticEvent, taskId: number) {
-        axios
-            .delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${taskId}`)
-            //.delete(`http://localhost:3000/categories/${props.categoryId}/tasks/${taskId}`)
-            .then(() => {
-                props.fetchTasksList();
-            });
+        axios.delete(`https://nguyiyang-cvwo.herokuapp.com/categories/${props.categoryId}/tasks/${taskId}`).then(() => {
+            props.fetchTasksList();
+        });
         event.preventDefault();
     }
 
@@ -43,17 +39,19 @@ const Task: React.FC<TaskProps> = (props: TaskProps) => {
                 title={props.title}
                 categoryId={props.categoryId}
                 fetchTasksList={props.fetchTasksList}
-                priority={props.priority}
+                detail={props.priority}
                 options={props.priorityList}
+                type="priority"
             />
 
-            <EditTaskRecurrence
+            <EditTaskDetails
                 taskId={props.taskId}
                 title={props.title}
                 categoryId={props.categoryId}
                 fetchTasksList={props.fetchTasksList}
-                recurrence={props.recurrence}
+                detail={props.recurrence}
                 options={props.recurrenceList}
+                type="recurrence"
             />
 
             <td className="remove-task">
